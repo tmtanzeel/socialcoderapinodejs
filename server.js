@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', function(req, res) {
-    res.send('Hello from the server');
+    res.send('Server is up and running!');
 })
 
 app.listen((process.env.PORT), function() {
