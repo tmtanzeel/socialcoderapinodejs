@@ -16,3 +16,17 @@ mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false }, err => 
         console.log('Successfully connected to mongodb');
     }
 })
+
+router.get('/articles', function(req, res) {
+    console.log('Get request for all articles');
+    Article.find({})
+        .exec(function(err, article) {
+            if (err) {
+                console.log("Error retrieving articles");
+            } else {
+                res.json(article);
+            }
+        });
+});
+
+module.exports = router;
