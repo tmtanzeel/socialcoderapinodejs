@@ -28,5 +28,3 @@ router.get('/articles', function(req, res) {
             }
         });
 });
-
-module.exports = router;
