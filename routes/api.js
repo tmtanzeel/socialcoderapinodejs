@@ -25,4 +25,20 @@ router.get('/articles', function(req, res) {
         });
 });
 
+
+router.get('/fetchback/:id', (req, res) => {
+    let articleId = req.params.id;
+    Article.findOne({ articleid: articleId }, (error, article) => {
+        if (error) {
+            console.log(error)
+        } else {
+            if (!article) {
+                res.status(401).send('Something went wrong!')
+            } else {
+                res.json(article);
+            }
+        }
+    })
+})
+
 module.exports = router;
