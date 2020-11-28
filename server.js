@@ -15,5 +15,5 @@ app.get('/', function(req, res) {
 })
 
 app.listen((process.env.port), function() {
-    console.log('Server listening on PORT ' + port)
+    console.log('Server listening on heroku environment port');
 });
