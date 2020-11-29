@@ -43,18 +43,18 @@ router.get('/fetchback/:id', (req, res) => {
 
 router.post('/login', (req, res) => {
     let userData = req.body
-    User.findOne({ email: 'tmtanzeel9@gmail.com' }, (error, user) => {
+    User.findOne({ email: userData.email }, (error, user) => {
         if (error) {
             console.log(error)
         } else {
             if (!user) {
                 res.status(401).send('Invalid email')
-            } else if (user.password !== 'test12_mail') {
+            } else if (user.password !== userData.password) {
                 res.status(401).send('Invalid password')
             } else {
                 let payLoad = { subject: user._id };
                 let token = jwt.sign(payLoad, 'secretKey');
-                res.status(200).json({ token, userData, user });
+                res.status(200).send({ token, userData, user });
             }
         }
     })
