@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Article = require('../models/article');
 const User = require('../models/user');
+const Post = require('../models/article');
 const db = 'mongodb://tanzeel_123:mydbpass@cluster0-shard-00-00-znt38.mongodb.net:27017,cluster0-shard-00-01-znt38.mongodb.net:27017,cluster0-shard-00-02-znt38.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
 const jwt = require('jsonwebtoken');
 
@@ -56,6 +57,19 @@ router.post('/login', (req, res) => {
                 let token = jwt.sign(payLoad, 'secretKey');
                 res.status(200).send({ token, userData, user });
             }
+        }
+    })
+})
+
+router.post('/contribute', verifyToken, (req, res) => {
+    console.log('Pushing new article');
+    let userPost = req.body;
+    let post = new Post(userPost);
+    post.save((error, registeredPost) => {
+        if (error) {
+            console.log(error);
+        } else {
+            res.status(200).send(registeredPost);
         }
     })
 })
