@@ -8,10 +8,13 @@ const cors = require('cors');
 
 app.use(bodyParser.json());
 
+app.use(cors());
+
 app.use(function(req, res, next) {
+    console.log("passed");
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'https://firefly-camp.azurewebsites.net/');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -32,6 +35,6 @@ app.get('/', function(req, res) {
     res.send('Server is up and running!');
 })
 
-app.listen((process.env.PORT), function() {
-    console.log('Server listening on heroku environment port');
+app.listen(((process.env.PORT)), function() {
+    console.log('Server listening on 3000 port');
 });
