@@ -7,7 +7,9 @@ const api = require('./routes/api');
 const cors = require('cors');
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://firefly-camp.azurewebsites.net/'
+}));
 
 app.use('/api', api);
 app.get('/', function(req, res) {
