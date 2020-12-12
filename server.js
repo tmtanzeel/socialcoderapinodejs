@@ -35,6 +35,6 @@ app.get('/', function(req, res) {
     res.send('Server is up and running!');
 })
 
-app.listen((3000), function() {
+app.listen(((process.env.PORT)), function() {
     console.log('Server listening on 3000 port');
 });
