@@ -62,7 +62,7 @@ router.post('/login', (req, res) => {
 })
 
 
-router.post('/contribute', verifyToken, (req, res) => {
+router.post('/contribute', (req, res) => {
     console.log('Pushing new article');
     let userPost = req.body;
     let post = new Post(userPost);
