@@ -61,7 +61,6 @@ router.post('/login', (req, res) => {
     })
 })
 
-
 router.post('/contribute', verifyToken, (req, res) => {
     console.log('Pushing new article');
     let userPost = req.body;
@@ -71,6 +70,23 @@ router.post('/contribute', verifyToken, (req, res) => {
             console.log(error);
         } else {
             res.status(200).send(registeredPost);
+        }
+    })
+})
+
+router.delete('/delete/:id', verifyToken, (req, res) => {
+    let articleId = req.params.id;
+    console.log("to be deleted " + articleId);
+    Article.deleteOne({ articleid: articleId }, (error, article) => {
+        if (error) {
+            console.log(error)
+        } else {
+            if (!article) {
+                res.status(401).send('something went wrong')
+            } else {
+                console.log('successfully deleted');
+                res.status(200).send('Deleted successfully!');
+            }
         }
     })
 })
