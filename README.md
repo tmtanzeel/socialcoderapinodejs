@@ -10,7 +10,7 @@ There are different versions of SocialCoder deployed. This serves as a common AP
 
 ## Sample usage
 
-You just have to make a GET request to this API with POSTMAN or directly from the terminal
+You just have to make a GET request to this API with POSTMAN or directly from the terminal using CURL command
 
     1. https://obscure-tundra-38074.herokuapp.com/api/articles
     2. https://obscure-tundra-38074.herokuapp.com/api/fetchback/{idOfArticle}
