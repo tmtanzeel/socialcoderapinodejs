@@ -6,6 +6,8 @@ const User = require('../models/user');
 const Post = require('../models/article');
 const db = 'mongodb://tanzeel_123:mydbpass@cluster0-shard-00-00-znt38.mongodb.net:27017,cluster0-shard-00-01-znt38.mongodb.net:27017,cluster0-shard-00-02-znt38.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
 const jwt = require('jsonwebtoken');
+const { MongoClient } = require("mongodb");
+const client = new MongoClient(db);
 
 mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false }, err => {
     if (err) {
@@ -26,6 +28,30 @@ router.get('/articles', function(req, res) {
             }
         });
 });
+
+router.get('/articles/count', async function(req, res) {
+    const result = await run();
+    if (result > 0) {
+       res.status(200).send(""+result);
+    } else {
+       res.status(500).send({error: 'Error while fetching data'});
+    }
+});
+
+async function run() {
+    let estimate;
+    try {
+      await client.connect();
+  
+      const database = client.db("test");
+      const movies = database.collection("articles");
+
+       estimate= await movies.estimatedDocumentCount();
+    } finally {
+      await client.close();
+    }
+    return estimate;
+}
 
 router.get('/fetchback/:id', (req, res) => {
     let articleId = req.params.id;
