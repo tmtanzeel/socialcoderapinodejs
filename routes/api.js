@@ -53,6 +53,19 @@ async function run() {
     return estimate;
 }
 
+router.get('/articles/:contributor', function(req, res) {
+    console.log('Get request for all articles from a certain contributor');
+    let Contributor = req.params.contributor;
+    Article.find({contributor: Contributor})
+        .exec(function(err, article) {
+            if (err) {
+                console.log("Error retrieving articles");
+            } else {
+                res.json(article);
+            }
+        });
+});
+
 router.get('/fetchback/:id', (req, res) => {
     let articleId = req.params.id;
     Article.findOne({ articleid: articleId }, (error, article) => {
