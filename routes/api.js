@@ -8,6 +8,7 @@ const db = 'mongodb://tanzeel_123:mydbpass@cluster0-shard-00-00-znt38.mongodb.ne
 const jwt = require('jsonwebtoken');
 const { MongoClient } = require("mongodb");
 const client = new MongoClient(db);
+const https = require("https");
 
 mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false }, err => {
     if (err) {

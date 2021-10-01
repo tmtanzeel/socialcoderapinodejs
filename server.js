@@ -10,8 +10,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-app.use(function(req, res, next) {
-    console.log("passed");
+app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,10 +30,10 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api', api);
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.send('Server is up and running!');
 })
 
-app.listen(((process.env.PORT)), function() {
+app.listen(3000, function () {
     console.log('Server listening on 3000 port');
 });
