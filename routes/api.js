@@ -17,10 +17,29 @@ mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false }, err => 
     }
 })
 
-router.get('/articles', function(req, res) {
+// github end point to fetch information about github/tmtanzeel only
+router.get('/github', async function (req, res) {
+    const options = {
+        hostname: 'api.github.com',
+        path: '/users/tmtanzeel',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
+        },
+        OAuth: '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'
+    }
+
+    https.get(options, function (apiRes) {
+        apiRes.pipe(res);
+    }).on('error', (e) => {
+        console.error(e);
+        res.status(500).send('Something went wrong');
+    });
+});
+
+router.get('/articles', function (req, res) {
     console.log('Get request for all articles');
     Article.find({})
-        .exec(function(err, article) {
+        .exec(function (err, article) {
             if (err) {
                 console.log("Error retrieving articles");
             } else {
@@ -29,35 +48,35 @@ router.get('/articles', function(req, res) {
         });
 });
 
-router.get('/articles/count', async function(req, res) {
+router.get('/articles/count', async function (req, res) {
     const result = await run();
     if (result > 0) {
-       res.status(200).send(""+result);
+        res.status(200).send("" + result);
     } else {
-       res.status(500).send({error: 'Error while fetching data'});
+        res.status(500).send({ error: 'Error while fetching data' });
     }
 });
 
 async function run() {
     let estimate;
     try {
-      await client.connect();
-  
-      const database = client.db("test");
-      const movies = database.collection("articles");
+        await client.connect();
 
-       estimate= await movies.estimatedDocumentCount();
+        const database = client.db("test");
+        const movies = database.collection("articles");
+
+        estimate = await movies.estimatedDocumentCount();
     } finally {
-      await client.close();
+        await client.close();
     }
     return estimate;
 }
 
-router.get('/articles/:contributor', function(req, res) {
+router.get('/articles/:contributor', function (req, res) {
     console.log('Get request for all articles from a certain contributor');
     let Contributor = req.params.contributor;
-    Article.find({contributor: Contributor})
-        .exec(function(err, article) {
+    Article.find({ contributor: Contributor })
+        .exec(function (err, article) {
             if (err) {
                 console.log("Error retrieving articles");
             } else {
