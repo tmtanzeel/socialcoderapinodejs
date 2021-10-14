@@ -18,6 +18,11 @@ mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false }, err => 
     }
 })
 
+router.get('/', function (req, res) {
+    res.status(200).send("Server is up and running! Everything is working as expected!")
+});
+
+
 router.get('/articles', function (req, res) {
     console.log('Get request for all articles');
     Article.find({})
@@ -67,6 +72,7 @@ router.get('/articles/:contributor', function (req, res) {
         });
 });
 
+
 router.get('/fetchback/:id', (req, res) => {
     let articleId = req.params.id;
     Article.findOne({ articleid: articleId }, (error, article) => {
@@ -101,8 +107,20 @@ router.post('/login', (req, res) => {
     })
 })
 
+//For testing use on mongodb filter: {articleid: "3i9q6aw1v"}
+
+router.post('/add-to-upvoters-list/:articleid/:userid', (req, res) => {
+    Article.findOneAndUpdate({ articleid: req.params.articleid }, { $push: { upvoters: req.params.userid } }, (failure, success) => {
+        if (success) {
+            res.status(200).send("added as upvoter")
+        }
+        else {
+            res.status(200).send("failed to add user as upvoter")
+        }
+    })
+})
+
 router.post('/contribute', verifyToken, (req, res) => {
-    console.log('Pushing new article');
     let userPost = req.body;
     let post = new Post(userPost);
     post.save((error, registeredPost) => {
@@ -113,6 +131,9 @@ router.post('/contribute', verifyToken, (req, res) => {
         }
     })
 })
+
+
+
 
 router.delete('/delete/:id', verifyToken, (req, res) => {
     let articleId = req.params.id;
