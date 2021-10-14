@@ -107,9 +107,10 @@ router.post('/login', (req, res) => {
     })
 })
 
-//For testing use on mongodb filter: {articleid: "3i9q6aw1v"}
+//For testing use on mongodb filter: {articleid: "3i9q6aw1v"}, userid: z0whc9r3o
 
 router.post('/add-to-upvoters-list/:articleid/:userid', (req, res) => {
+    Article.findOneAndUpdate({ articleid: req.params.articleid }, { $inc: { upvotes: 1 } }).then(opResult => console.log(opResult));
     Article.findOneAndUpdate({ articleid: req.params.articleid }, { $push: { upvoters: req.params.userid } }, (failure, success) => {
         if (success) {
             res.status(200).send("added as upvoter")
