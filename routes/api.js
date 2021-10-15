@@ -128,7 +128,19 @@ router.post('/remove-from-upvoters-list/:articleid/:userid', (req, res) => {
             res.status(200).send("User removed from upvoters list")
         }
         else {
-            res.status(200).send("Failed to remove user removed from upvoters list")
+            res.status(200).send("Failed to remove user from upvoters list")
+        }
+    })
+})
+
+//For testing use on mongodb filter: {articleid: "3i9q6aw1v"}, userid: z0whc9r3o
+router.post('/remove-from-downvoters-list/:articleid/:userid', (req, res) => {
+    Article.findOneAndUpdate({ articleid: req.params.articleid }, { $pull: { userid: req.params.userid } }, (failure, success) => {
+        if (success) {
+            res.status(200).send("User removed from downvoters list")
+        }
+        else {
+            res.status(200).send("Failed to remove user from downvoters list")
         }
     })
 })
