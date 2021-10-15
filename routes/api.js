@@ -108,15 +108,27 @@ router.post('/login', (req, res) => {
 })
 
 //For testing use on mongodb filter: {articleid: "3i9q6aw1v"}, userid: z0whc9r3o
-
 router.post('/add-to-upvoters-list/:articleid/:userid', (req, res) => {
-    Article.findOneAndUpdate({ articleid: req.params.articleid }, { $inc: { upvotes: 1 } }).then(opResult => console.log(opResult));
+    // to increase number of upvotes by 1
+    //Article.findOneAndUpdate({ articleid: req.params.articleid }, { $inc: { upvotes: 1 } }).then(opResult => console.log(opResult));
     Article.findOneAndUpdate({ articleid: req.params.articleid }, { $push: { upvoters: req.params.userid } }, (failure, success) => {
         if (success) {
             res.status(200).send("added as upvoter")
         }
         else {
             res.status(200).send("failed to add user as upvoter")
+        }
+    })
+})
+
+//For testing use on mongodb filter: {articleid: "3i9q6aw1v"}, userid: z0whc9r3o
+router.post('/remove-from-upvoters-list/:articleid/:userid', (req, res) => {
+    Article.findOneAndUpdate({ articleid: req.params.articleid }, { $pull: { upvoters: req.params.userid } }, (failure, success) => {
+        if (success) {
+            res.status(200).send("User removed from upvoters list")
+        }
+        else {
+            res.status(200).send("Failed to remove user removed from upvoters list")
         }
     })
 })
