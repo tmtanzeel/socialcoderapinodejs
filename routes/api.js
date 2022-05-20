@@ -35,6 +35,19 @@ router.get('/articles', function (req, res) {
         });
 });
 
+router.get('/users', function (req, res) {
+    console.log('Get request for all users');
+    User.find({})
+        .select('-password')
+        .exec(function (err, user) {
+            if (err) {
+                console.log("Error retrieving users");
+            } else {
+                res.json(user);
+            }
+        });
+});
+
 router.get('/articles/count', async function (req, res) {
     const result = await run();
     if (result > 0) {
@@ -216,5 +229,7 @@ function verifyToken(req, res, next) {
     req.userId = payload.subject
     next()
 }
+
+
 
 module.exports = router;
