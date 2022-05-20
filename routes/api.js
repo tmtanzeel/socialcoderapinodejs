@@ -169,7 +169,19 @@ router.post('/contribute', verifyToken, (req, res) => {
     })
 })
 
-
+router.post('/register', (req, res) => {
+    let user = req.body;
+    let userData = new User(user);
+    userData.save((error, registeredUser) => {
+        if (error) {
+            console.log(error);
+        } else {
+            let payLoad = { subject: registeredUser._id };
+            let token = jwt.sign(payLoad, 'secretKey');
+            res.status(200).send({ token, user });
+        }
+    })
+})
 
 
 router.delete('/delete/:id', verifyToken, (req, res) => {
